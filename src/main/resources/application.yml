@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    show-sql: ${SHOW_SQL:true}
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    generate-ddl: true
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    properties.hibarnate.dialect: org.hibernate.dialect.PostgreSQL94Dialect
+
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      max-active: 10
+      max-idle: 5
+      min-idle: 2
+      initial-size: 5
+      remove-abandoned: true
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+server:
+  port: 8081
