@@ -1,0 +1,18 @@
+package com.tb.bimo.model.dto.mapper;
+
+import com.tb.bimo.model.User;
+import com.tb.bimo.model.dto.CreateUserRequest;
+import org.mapstruct.Mapper;
+
+@Mapper
+public interface UserMapper {
+
+    User createUserRequestToUser(CreateUserRequest createUserRequest);
+
+    CreateUserRequest userToCreateUserRequest(User user);
+
+    /*
+    User updateUserRequestToUser(UpdateUserRequest updateUserRequest);
+    UpdateUserRequest userToUpdateUserRequest(User user);
+    */
+}
