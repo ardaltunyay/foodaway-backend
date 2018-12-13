@@ -1,7 +1,7 @@
 package com.tb.bimo.controller.mobile;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
-import com.tb.bimo.model.User;
+import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.model.dto.UserLoginRequest;
 import com.tb.bimo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/mobile/auth")
+@RequestMapping("/mobile/auth")
 public class AuthMobileController {
 
     private final UserService userService;

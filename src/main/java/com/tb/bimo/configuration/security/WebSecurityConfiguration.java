@@ -1,5 +1,6 @@
-package com.tb.bimo.configuration;
+package com.tb.bimo.configuration.security;
 
+import com.tb.bimo.configuration.MDCFilter;
 import com.tb.bimo.service.core.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +16,8 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 
 import javax.servlet.http.HttpServletResponse;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@Configuration
 @RequiredArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -33,7 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/mobile/auth").not().authenticated()
-                .antMatchers(HttpMethod.POST, "/mobile/user").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/mobile/user").not().authenticated()//.hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()

@@ -1,6 +1,6 @@
 package com.tb.bimo.repository;
 
-import com.tb.bimo.model.User;
+import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.model.enums.UserRole;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

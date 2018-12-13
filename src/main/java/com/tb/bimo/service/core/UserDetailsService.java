@@ -1,6 +1,6 @@
 package com.tb.bimo.service.core;
 
-import com.tb.bimo.model.User;
+import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.model.enums.UserRole;
 import com.tb.bimo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+
+    // TODO: add company authority to the authorizarion principal
 
     private final UserRepository userRepository;
 

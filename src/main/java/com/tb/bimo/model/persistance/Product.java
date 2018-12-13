@@ -1,7 +1,6 @@
-package com.tb.bimo.model;
+package com.tb.bimo.model.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tb.bimo.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,17 +13,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class User {
+public class Product {
 
     @Id
     private String id;
 
-    private String email;
-
     @JsonIgnore
-    private String password;
+    private String companyId;
 
-    private UserRole role;
+    private String title;
 
-    private boolean isEnabled;
+    private String description;
+
+    private Double price;
 }
