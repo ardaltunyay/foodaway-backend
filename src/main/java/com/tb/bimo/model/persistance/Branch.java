@@ -1,41 +1,31 @@
 package com.tb.bimo.model.persistance;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tb.bimo.model.common.AdminCompanyRole;
-import com.tb.bimo.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class User {
+public class Branch {
 
     @Id
     private String id;
 
     @NotNull
-    private String email;
-
-    @JsonIgnore
-    @NotNull
-    private String password;
+    private String branchName;
 
     @NotNull
-    private UserRole role;
+    private String companyId;
 
     @NotNull
-    private boolean isEnabled;
-
-    @JsonIgnore
-    private Set<AdminCompanyRole> adminCompanyRoles;
+    private GeoJsonPoint location;
 }

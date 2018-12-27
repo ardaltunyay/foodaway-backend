@@ -1,6 +1,6 @@
 package com.tb.bimo.controller.backoffice;
 
-import com.tb.bimo.model.dto.CreateProductRequest;
+import com.tb.bimo.model.dto.request.CreateProductRequest;
 import com.tb.bimo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,7 @@ public class ProductBackofficeController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_CONTENT_MANAGER') and isCompanyAuthorized(#companyId)")
     public void addProduct(@RequestBody CreateProductRequest createProductRequest, @PathVariable String companyId) {
-
-        log.info("Adding product for company: {}", "T104");
-        productService.create(createProductRequest);
+        log.info("Adding product for company: {}", companyId);
+        productService.create(createProductRequest, companyId);
     }
 }

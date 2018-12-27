@@ -1,7 +1,9 @@
 package com.tb.bimo.configuration;
 
+import com.tb.bimo.repository.BranchRepository;
 import com.tb.bimo.repository.ProductRepository;
 import com.tb.bimo.repository.UserRepository;
+import com.tb.bimo.service.BranchService;
 import com.tb.bimo.service.ProductService;
 import com.tb.bimo.service.UserService;
 import com.tb.bimo.service.core.UserDetailsService;
@@ -20,5 +22,10 @@ public class ServiceConfiguration {
     @Bean
     public ProductService productService(ProductRepository productRepository) {
         return new ProductService(productRepository);
+    }
+
+    @Bean
+    public BranchService branchService(BranchRepository branchRepository) {
+        return new BranchService(branchRepository);
     }
 }

@@ -3,7 +3,7 @@ package com.tb.bimo.service;
 import com.tb.bimo.exception.ResourceAlreadyExistsException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.persistance.User;
-import com.tb.bimo.model.dto.CreateUserRequest;
+import com.tb.bimo.model.dto.request.CreateUserRequest;
 import com.tb.bimo.model.dto.mapper.UserMapper;
 import com.tb.bimo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

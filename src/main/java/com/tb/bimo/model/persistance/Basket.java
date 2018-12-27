@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
+
+import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -20,9 +22,10 @@ public class Basket {
     private String id;
 
     @JsonIgnore
+    @NotNull
     private String userId;
 
     private String campaignId;
 
-    private List<Product> productList;
+    private Map<Product,String> productList;
 }

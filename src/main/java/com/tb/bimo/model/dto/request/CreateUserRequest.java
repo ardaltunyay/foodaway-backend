@@ -1,4 +1,4 @@
-package com.tb.bimo.model.dto;
+package com.tb.bimo.model.dto.request;
 
 import com.tb.bimo.model.enums.UserRole;
 import lombok.*;

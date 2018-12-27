@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,11 +21,14 @@ public class Product {
     private String id;
 
     @JsonIgnore
+    @NotNull
     private String companyId;
 
+    @NotNull
     private String title;
 
     private String description;
 
+    @NotNull
     private Double price;
 }

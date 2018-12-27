@@ -1,8 +1,5 @@
 package com.tb.bimo.model.persistance;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tb.bimo.model.common.AdminCompanyRole;
-import com.tb.bimo.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,31 +8,25 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class User {
+public class Campaign {
 
     @Id
     private String id;
 
     @NotNull
-    private String email;
-
-    @JsonIgnore
-    @NotNull
-    private String password;
+    private String title;
 
     @NotNull
-    private UserRole role;
+    private String description;
 
     @NotNull
-    private boolean isEnabled;
+    private String companyId;
 
-    @JsonIgnore
-    private Set<AdminCompanyRole> adminCompanyRoles;
+    private Double discountRate;
 }

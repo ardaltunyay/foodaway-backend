@@ -1,7 +1,7 @@
 package com.tb.bimo.model.dto.mapper;
 
 import com.tb.bimo.model.persistance.User;
-import com.tb.bimo.model.dto.CreateUserRequest;
+import com.tb.bimo.model.dto.request.CreateUserRequest;
 import org.mapstruct.Mapper;
 
 @Mapper
