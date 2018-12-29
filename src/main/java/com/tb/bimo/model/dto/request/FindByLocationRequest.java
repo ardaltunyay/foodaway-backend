@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindBranchesByLocationRequest {
+public class FindByLocationRequest {
 
     private String latitude;
 

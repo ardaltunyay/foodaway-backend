@@ -28,5 +28,8 @@ public class Campaign {
     @NotNull
     private String companyId;
 
+    @NotNull
+    private String companyName;
+
     private Double discountRate;
 }

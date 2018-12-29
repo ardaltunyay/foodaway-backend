@@ -2,7 +2,7 @@ package com.tb.bimo.controller.mobile;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.persistance.User;
-import com.tb.bimo.model.dto.UserLoginRequest;
+import com.tb.bimo.model.dto.request.UserLoginRequest;
 import com.tb.bimo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,6 +1,6 @@
 package com.tb.bimo.controller.mobile;
 
-import com.tb.bimo.model.dto.request.FindBranchesByLocationRequest;
+import com.tb.bimo.model.dto.request.FindByLocationRequest;
 import com.tb.bimo.model.persistance.Branch;
 import com.tb.bimo.service.BranchService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ public class BranchMobileController {
     private final BranchService branchService;
 
     @GetMapping
-    public List<Branch> getBranchListByLocationNear(@RequestBody FindBranchesByLocationRequest findBranchesByLocationRequest) {
+    public List<Branch> getBranchListByLocationNear(@RequestBody FindByLocationRequest findByLocationRequest) {
         return branchService.getBranchListByLocationNear(
-                findBranchesByLocationRequest.getLatitude(),
-                findBranchesByLocationRequest.getLongitude(),
-                findBranchesByLocationRequest.getDistance()
+                findByLocationRequest.getLatitude(),
+                findByLocationRequest.getLongitude(),
+                findByLocationRequest.getDistance()
         );
     }
 }
