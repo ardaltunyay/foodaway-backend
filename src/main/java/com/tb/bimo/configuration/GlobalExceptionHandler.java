@@ -1,22 +1,22 @@
 package com.tb.bimo.configuration;
 
+import com.tb.bimo.exception.ApiError;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource does not exist")
     @ExceptionHandler(ResourceNotFoundException.class)
-    public void handleResourceNotFoundException(ResourceNotFoundException e) {
-        log.error("Resource does not exist", e);
-        log.info(e.getMessage());
+    public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException e) {
+        return handleError("Not Found", e.getMessage(), HttpStatus.NOT_FOUND);
     }
 /*
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Server Error Occurred")
@@ -33,4 +33,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.info(e.getMessage());
     }
 */
+    private ResponseEntity<ApiError> handleError(String error, String message, HttpStatus status) {
+        HttpHeaders headers = new HttpHeaders();
+
+        ApiError apiError = ApiError.builder()
+                .status(status.value())
+                .error(error)
+                .message(message)
+                .build();
+        return new ResponseEntity<>(apiError, headers, status);
+    }
 }

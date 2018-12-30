@@ -41,7 +41,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private UserDetails map(User user) {
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
+                .username(user.getId())
                 .password(user.getPassword())
                 .disabled(!user.isEnabled())
                 .roles(concatenateRoles(user))

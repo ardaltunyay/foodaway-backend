@@ -27,5 +27,5 @@ public class Basket {
 
     private String campaignId;
 
-    private Map<Product,String> productList;
+    private Map<String, String> productList;
 }

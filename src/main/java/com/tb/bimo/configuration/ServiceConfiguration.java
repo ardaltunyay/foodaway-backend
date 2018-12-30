@@ -1,12 +1,7 @@
 package com.tb.bimo.configuration;
 
-import com.tb.bimo.repository.BranchRepository;
-import com.tb.bimo.repository.ProductRepository;
-import com.tb.bimo.repository.UserRepository;
-import com.tb.bimo.service.BranchService;
-import com.tb.bimo.service.ProductService;
-import com.tb.bimo.service.UserService;
-import com.tb.bimo.service.core.UserDetailsService;
+import com.tb.bimo.repository.*;
+import com.tb.bimo.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,5 +22,15 @@ public class ServiceConfiguration {
     @Bean
     public BranchService branchService(BranchRepository branchRepository) {
         return new BranchService(branchRepository);
+    }
+
+    @Bean
+    public BasketService basketService(BasketRepository basketRepository) {
+        return new BasketService(basketRepository);
+    }
+
+    @Bean
+    public CampaignService campaignService(CampaignRepository campaignRepository) {
+        return new CampaignService(campaignRepository);
     }
 }
