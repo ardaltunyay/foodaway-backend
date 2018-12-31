@@ -42,6 +42,7 @@ hs_err_pid*
 .settings
 .springBeans
 /build
+/target
 /code
 MANIFEST.MF
 _site/

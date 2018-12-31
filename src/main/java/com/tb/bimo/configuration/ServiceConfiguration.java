@@ -25,8 +25,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public BasketService basketService(BasketRepository basketRepository) {
-        return new BasketService(basketRepository);
+    public BasketService basketService(BasketRepository basketRepository, ProductRepository productRepository, CompanyRepository companyRepository) {
+        return new BasketService(basketRepository, productRepository, companyRepository);
     }
 
     @Bean

@@ -1,20 +1,19 @@
 package com.tb.bimo.model.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.tb.bimo.model.common.BasketProduct;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.Map;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Document
 public class Basket {
 
@@ -25,7 +24,14 @@ public class Basket {
     @NotNull
     private String userId;
 
+    @NotNull
+    private String companyId;
+
+    @NotNull
+    private String companyName;
+
+    @NotNull
     private String campaignId;
 
-    private Map<String, String> productList;
+    private List<BasketProduct> productList;
 }

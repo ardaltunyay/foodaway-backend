@@ -1,6 +1,8 @@
 package com.tb.bimo.configuration;
 
 import com.tb.bimo.exception.ApiError;
+import com.tb.bimo.exception.BasketCompanyIdNotFoundException;
+import com.tb.bimo.exception.BasketProductIdNotFoundException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +19,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException e) {
         return handleError("Not Found", e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BasketProductIdNotFoundException.class)
+    public ResponseEntity<ApiError> handleBasketProductIdNotFoundException(BasketProductIdNotFoundException e) {
+        return handleError("Bad Request", e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BasketCompanyIdNotFoundException.class)
+    public ResponseEntity<ApiError> handleBasketCompanyIdNotFoundException(BasketCompanyIdNotFoundException e) {
+        return handleError("Bad Request", e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 /*
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Server Error Occurred")
