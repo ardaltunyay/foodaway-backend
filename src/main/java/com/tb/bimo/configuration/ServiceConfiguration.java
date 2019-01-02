@@ -33,4 +33,9 @@ public class ServiceConfiguration {
     public CampaignService campaignService(CampaignRepository campaignRepository) {
         return new CampaignService(campaignRepository);
     }
+
+    @Bean
+    public OrderService orderService(OrderRepository orderRepository, BasketRepository basketRepository) {
+        return new OrderService(orderRepository, basketRepository);
+    }
 }

@@ -83,7 +83,14 @@ public class BasketService {
         return basketRepository.save(basket);
     }
 
-    // TODO Move custom mapping methods to the BasketMapper
+    public boolean deleteAllBasketsOfUser(String userId) {
+        return basketRepository.deleteAllByUserId(userId);
+    }
+
+    public boolean deleteBasketOfUserByCampaignId(String userId, String companyId){
+        return basketRepository.deleteByUserIdAndAndCompanyId(userId, companyId);
+    }
+
     private BasketProduct mapProductIdQuantityToBasketProduct(ProductIdQuantity productIdQuantity) {
         return BasketProduct
                 .builder()

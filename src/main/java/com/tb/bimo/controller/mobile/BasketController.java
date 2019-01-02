@@ -41,11 +41,13 @@ public class BasketController {
         return basketService.updateBasket(principal.getName(), updateBasketRequest);
     }
 
-    // TODO complete missing methods
     @DeleteMapping
-    public void deleteBasketOfUserByCampaignId(@RequestParam String campaignId, Principal principal) {}
+    public void deleteBasketOfUserByCampaignId(@RequestParam String campaignId, Principal principal) {
+        basketService.deleteBasketOfUserByCampaignId(principal.getName(), campaignId);
+    }
 
-    // TODO complete missing methods
     @DeleteMapping("/all")
-    public void deleteAllBasketsOfUser(Principal principal) {}
+    public void deleteAllBasketsOfUser(Principal principal) {
+        basketService.deleteAllBasketsOfUser(principal.getName());
+    }
 }
