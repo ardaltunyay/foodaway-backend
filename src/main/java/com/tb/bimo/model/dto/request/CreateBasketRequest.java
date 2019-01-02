@@ -1,9 +1,9 @@
 package com.tb.bimo.model.dto.request;
 
-import com.sun.istack.internal.NotNull;
 import com.tb.bimo.model.dto.common.ProductIdQuantity;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
