@@ -45,6 +45,7 @@ hs_err_pid*
 .target
 target
 /target
+./target
 /code
 MANIFEST.MF
 _site/
