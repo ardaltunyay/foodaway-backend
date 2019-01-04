@@ -43,4 +43,15 @@ public class Basket {
 
     @LastModifiedDate
     private DateTime dateModified;
+
+    public Double calculatePrice() {
+        Double price = 0.00;
+
+        while (productList.iterator().hasNext()) {
+            BasketProduct basketProduct = productList.iterator().next();
+            price += basketProduct.getProduct().getPrice() * basketProduct.getQuantity().doubleValue();
+        }
+
+        return price;
+    }
 }

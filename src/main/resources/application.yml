@@ -11,6 +11,11 @@ server:
   servlet:
     context-path: /api
 
+iyzipay-api:
+  api-key: ${IYZICO_APIKEY:sandbox-zSQqgypAbKCdwaWX9zqjZG5aAWA7Rmxx}
+  secret-key: ${IYZICO_SECRETKEY:sandbox-HsJQ66IT5f1p3kOLCM0djaV1SVFQhhyq}
+  base-url: ${IYZICO_BASEURL:https://sandbox-api.iyzipay.com}
+
 ---
 
 spring:
