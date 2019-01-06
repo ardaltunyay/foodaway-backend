@@ -1,8 +1,8 @@
-package com.tb.bimo.controller.mobile;
+package com.tb.bimo.controller.web;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
-import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.model.dto.request.UserLoginRequest;
+import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,8 +20,8 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mobile/auth")
-public class AuthMobileController {
+@RequestMapping("/web/auth")
+public class AuthWebController {
 
     private final UserService userService;
 
@@ -44,11 +44,4 @@ public class AuthMobileController {
 
         log.info("Login with email {} is successful.", userLoginRequest.getEmail());
     }
-/*
-    @SneakyThrows
-    @GetMapping("/user")
-    public User getUserDetail(Authentication authentication) {
-        return userService.getUserByEmail(authentication.getName());
-    }
-    */
 }

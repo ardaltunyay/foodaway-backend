@@ -35,7 +35,12 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public OrderService orderService(OrderRepository orderRepository, BasketRepository basketRepository, CampaignRepository campaignRepository) {
-        return new OrderService(orderRepository, basketRepository, campaignRepository);
+    public OrderService orderService(OrderRepository orderRepository, BasketRepository basketRepository, CampaignRepository campaignRepository, UserRepository userRepository) {
+        return new OrderService(orderRepository, basketRepository, campaignRepository, userRepository);
+    }
+
+    @Bean
+    public MenuService menuService(MenuRepository menuRepository, ProductRepository productRepository, BranchRepository branchRepository) {
+        return new MenuService(menuRepository, productRepository, branchRepository);
     }
 }

@@ -1,25 +1,22 @@
 package com.tb.bimo.service;
 
-import com.iyzipay.model.Currency;
-import com.iyzipay.model.Locale;
-import com.iyzipay.model.PaymentChannel;
-import com.iyzipay.model.PaymentGroup;
-import com.iyzipay.request.CreatePaymentRequest;
+import com.iyzipay.model.Payment;
 import com.tb.bimo.exception.ResourceNotFoundException;
-import com.tb.bimo.model.common.BasketProduct;
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
 import com.tb.bimo.model.dto.response.PlaceOrderResponse;
 import com.tb.bimo.model.persistance.Basket;
 import com.tb.bimo.model.persistance.Campaign;
 import com.tb.bimo.model.persistance.Order;
+import com.tb.bimo.model.persistance.User;
 import com.tb.bimo.repository.BasketRepository;
 import com.tb.bimo.repository.CampaignRepository;
 import com.tb.bimo.repository.OrderRepository;
+import com.tb.bimo.repository.UserRepository;
 import com.tb.bimo.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Slf4j
@@ -29,40 +26,31 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final BasketRepository basketRepository;
     private final CampaignRepository campaignRepository;
+    private final UserRepository userRepository;
+
+    @Autowired
+    private IyzicoService iyzicoService;
 
     public PlaceOrderResponse placeOrder(String userId, PlaceOrderRequest placeOrderRequest) {
         Basket basket = basketRepository.findById(placeOrderRequest.getBasketId()).orElseThrow(() -> new ResourceNotFoundException("Basket not found."));
-        Optional<Campaign> campaign = campaignRepository.findById(basket.getCampaignId());
-        Double price = basket.calculatePrice();
-        Double paidPrice = price;
 
-        if (campaign.isPresent()) {
-            paidPrice = price - price * campaign.get().getDiscountRate();
+        Optional<Campaign> optionalCampaign = Optional.empty();
+        if (basket.getCampaignId() != null) {
+            optionalCampaign = campaignRepository.findById(basket.getCampaignId());
         }
 
-        CreatePaymentRequest request = new CreatePaymentRequest();
-        request.setLocale(Locale.TR.getValue());
-        request.setConversationId("123456789");
-        request.setPrice(new BigDecimal(price));
-        request.setPaidPrice(new BigDecimal(paidPrice));
-        request.setCurrency(Currency.TRY.name());
-        request.setInstallment(1);
-        request.setBasketId("B67832");
-        request.setPaymentChannel(PaymentChannel.MOBILE.name());
-        request.setPaymentGroup(PaymentGroup.PRODUCT.name());
-
-
-
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found."));
 
         String orderNumber;
         do {
             orderNumber = TokenGenerator.generateToken();
         } while (orderRepository.existsByOrderNumber(orderNumber));
 
-        Double totalPrice = 0.00;
-        while (basket.getProductList().iterator().hasNext()) {
-            BasketProduct basketProduct = basket.getProductList().iterator().next();
-            totalPrice += basketProduct.getQuantity() * basketProduct.getProduct().getPrice();
+        Payment payment;
+        if (optionalCampaign != null && optionalCampaign.isPresent()) {
+            payment = iyzicoService.createPayment(user, placeOrderRequest, basket, optionalCampaign.get(), orderNumber);
+        } else {
+            payment = iyzicoService.createPayment(user, placeOrderRequest, basket, orderNumber);
         }
 
         Order order = Order
@@ -72,13 +60,17 @@ public class OrderService {
                 .companyId(basket.getCompanyId())
                 .companyName(basket.getCompanyName())
                 .productList(basket.getProductList())
-                .totalPrice(totalPrice)
+                .totalPrice(payment.getPaidPrice().doubleValue())
                 .userId(userId)
+                .status(payment.getStatus())
                 .build();
 
         orderRepository.save(order);
+        basketRepository.deleteById(basket.getId());
 
         // TODO throw a new event of sending notification to the restaurant screen
         return PlaceOrderResponse.builder().orderNumber(orderNumber).build();
     }
+
+    //public getOrdersByBranchId
 }

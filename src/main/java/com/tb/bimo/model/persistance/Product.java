@@ -29,6 +29,8 @@ public class Product {
 
     private String description;
 
+    private String logoUrl;
+
     @NotNull
     private Double price;
 }

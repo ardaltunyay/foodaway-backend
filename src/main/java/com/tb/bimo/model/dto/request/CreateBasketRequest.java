@@ -16,6 +16,9 @@ public class CreateBasketRequest {
     @NotNull
     String companyId;
 
+    @NotNull
+    String branchId;
+
     String campaignId;
 
     List<ProductIdQuantity> products;

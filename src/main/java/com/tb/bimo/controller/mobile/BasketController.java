@@ -22,8 +22,8 @@ public class BasketController {
     private final BasketService basketService;
 
     @GetMapping
-    public Basket getBasketOfUserByCampaignId(@RequestParam String campaignId, Principal principal) {
-        return basketService.getBasketOfUserByCampaignId(principal.getName(), campaignId);
+    public Basket getBasketOfUserByBranchId(@RequestParam String branchId, Principal principal) {
+        return basketService.getBasketOfUserByBranchId(principal.getName(), branchId);
     }
 
     @GetMapping("/all")
@@ -42,8 +42,8 @@ public class BasketController {
     }
 
     @DeleteMapping
-    public void deleteBasketOfUserByCampaignId(@RequestParam String campaignId, Principal principal) {
-        basketService.deleteBasketOfUserByCampaignId(principal.getName(), campaignId);
+    public void deleteBasketOfUserByBranchId(@RequestParam String branchId, Principal principal) {
+        basketService.deleteBasketOfUserByBranchId(principal.getName(), branchId);
     }
 
     @DeleteMapping("/all")

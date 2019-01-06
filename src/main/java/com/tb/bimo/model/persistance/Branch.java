@@ -27,5 +27,8 @@ public class Branch {
     private String companyId;
 
     @NotNull
+    private String menuId;
+
+    @NotNull
     private GeoJsonPoint location;
 }

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.ListIterator;
 
 @Getter
 @Setter
@@ -34,6 +35,9 @@ public class Basket {
     private String companyName;
 
     @NotNull
+    private String branchId;
+
+    @NotNull
     private String campaignId;
 
     private List<BasketProduct> productList;
@@ -47,8 +51,9 @@ public class Basket {
     public Double calculatePrice() {
         Double price = 0.00;
 
-        while (productList.iterator().hasNext()) {
-            BasketProduct basketProduct = productList.iterator().next();
+        ListIterator litr = productList.listIterator();
+        while (litr.hasNext()) {
+            BasketProduct basketProduct = (BasketProduct) litr.next();
             price += basketProduct.getProduct().getPrice() * basketProduct.getQuantity().doubleValue();
         }
 

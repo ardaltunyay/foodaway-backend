@@ -47,6 +47,9 @@ public class Order {
     @NotNull
     private Double totalPrice;
 
+    @NotNull
+    private String status;
+
     @CreatedDate
     private DateTime dateCreated;
 

@@ -28,13 +28,13 @@ public class BasketService {
     private final CompanyRepository companyRepository;
     private BasketMapper basketMapper = Mappers.getMapper(BasketMapper.class);
 
-    public Basket getBasketOfUserByCampaignId(String userId, String companyId) {
-        log.info("Fetching basket for company {} of user: {}", companyId, userId);
+    public Basket getBasketOfUserByBranchId(String userId, String branchId) {
+        log.info("Fetching basket for company {} of user: {}", branchId, userId);
 
-        if (basketRepository.findByUserIdAndCompanyId(userId, companyId).isPresent()) {
-            return basketRepository.findByUserIdAndCompanyId(userId, companyId).get();
+        if (basketRepository.findByUserIdAndBranchId(userId, branchId).isPresent()) {
+            return basketRepository.findByUserIdAndBranchId(userId, branchId).get();
         } else {
-            log.info("Basket not found for userId {} and companyId {}", userId, companyId);
+            log.info("Basket not found for userId {} and companyId {}", userId, branchId);
             throw  new ResourceNotFoundException("Basket not found for this company.");
         }
     }
@@ -87,13 +87,12 @@ public class BasketService {
         return basketRepository.deleteAllByUserId(userId);
     }
 
-    public boolean deleteBasketOfUserByCampaignId(String userId, String companyId){
-        return basketRepository.deleteByUserIdAndAndCompanyId(userId, companyId);
+    public boolean deleteBasketOfUserByBranchId(String userId, String companyId){
+        return basketRepository.deleteByUserIdAndAndBranchId(userId, companyId);
     }
 
     private BasketProduct mapProductIdQuantityToBasketProduct(ProductIdQuantity productIdQuantity) {
-        return BasketProduct
-                .builder()
+        return BasketProduct.builder()
                 .product(productRepository.findById(productIdQuantity.getProductId()).orElseThrow(() -> {
                     log.error("Invalid product id {} given to add basket.", productIdQuantity.getProductId());
                     return new BasketProductIdNotFoundException("Invalid product id given.");

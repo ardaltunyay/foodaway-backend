@@ -19,6 +19,9 @@ public class UpdateBasketRequest {
     @NotNull
     String companyId;
 
+    @NotNull
+    String branchId;
+
     String campaignId;
 
     List<ProductIdQuantity> products;

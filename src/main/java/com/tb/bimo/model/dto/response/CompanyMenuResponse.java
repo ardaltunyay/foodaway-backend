@@ -1,6 +1,6 @@
 package com.tb.bimo.model.dto.response;
 
-import com.tb.bimo.model.persistance.Campaign;
+import com.tb.bimo.model.dto.common.SubMenuWithProductObj;
 import lombok.*;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CompanyCampaign {
+public class CompanyMenuResponse {
 
     private String companyName;
-    private String branchId;
-    private List<Campaign> campaignList;
+    private String companyLogoUrl;
+    private List<SubMenuWithProductObj> menuList;
 }

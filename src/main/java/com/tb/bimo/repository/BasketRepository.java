@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface BasketRepository extends MongoRepository<Basket, String> {
 
     List<Basket> findAllByUserId(String userId);
-    Optional<Basket> findByUserIdAndCompanyId(String userId, String companyId);
+    Optional<Basket> findByUserIdAndBranchId(String userId, String branchId);
     boolean deleteAllByUserId(String userId);
-    boolean deleteByUserIdAndAndCompanyId(String userId, String companyId);
+    boolean deleteByUserIdAndAndBranchId(String userId, String branchId);
 }

@@ -41,6 +41,7 @@ public class CampaignMobileController {
                         CompanyCampaign
                             .builder()
                             .companyName(campaignList.iterator().next().getCompanyName())
+                            .branchId(branch.getId())
                             .campaignList(campaignList)
                             .build()
                 );
