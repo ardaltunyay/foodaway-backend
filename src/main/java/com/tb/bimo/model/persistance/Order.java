@@ -39,6 +39,10 @@ public class Order {
     @NotNull
     private String companyName;
 
+    @JsonIgnore
+    @NotNull
+    private String branchId;
+
     @NotNull
     private String campaignId;
 
@@ -50,9 +54,14 @@ public class Order {
     @NotNull
     private String status;
 
+    @JsonIgnore
+    @NotNull
+    private String paymentId;
+
     @CreatedDate
     private DateTime dateCreated;
 
+    @JsonIgnore
     @LastModifiedDate
     private DateTime dateModified;
 }

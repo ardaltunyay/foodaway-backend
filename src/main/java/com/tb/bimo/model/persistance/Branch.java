@@ -26,7 +26,6 @@ public class Branch {
     @NotNull
     private String companyId;
 
-    @NotNull
     private String menuId;
 
     @NotNull

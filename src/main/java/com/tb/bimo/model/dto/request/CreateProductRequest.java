@@ -14,4 +14,6 @@ public class CreateProductRequest {
     private String description;
 
     private String price;
+
+    private String logoUrl;
 }

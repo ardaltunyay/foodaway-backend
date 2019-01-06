@@ -1,4 +1,4 @@
-package com.tb.bimo.model.dto.response;
+package com.tb.bimo.model.dto.common;
 
 import com.tb.bimo.model.persistance.Campaign;
 import lombok.*;

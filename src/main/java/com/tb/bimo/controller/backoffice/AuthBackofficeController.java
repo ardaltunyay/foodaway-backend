@@ -1,4 +1,4 @@
-package com.tb.bimo.controller.mobile;
+package com.tb.bimo.controller.backoffice;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.enums.UserRole;
@@ -21,8 +21,8 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mobile/auth")
-public class AuthMobileController {
+@RequestMapping("/backoffice/auth")
+public class AuthBackofficeController {
 
     private final UserService userService;
 
@@ -33,7 +33,7 @@ public class AuthMobileController {
         log.info("Trying to login with email {}", userLoginRequest.getEmail());
 
         try {
-            if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.MOBILE_USER) {
+            if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.CONTENT_MANAGER) {
                 request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
             } else {
                 throw new ResourceNotFoundException("E-mail adresiniz yada şifreniz hatalıdır.");

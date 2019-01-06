@@ -1,7 +1,7 @@
 package com.tb.bimo.model.dto.request;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import java.util.List;
 
 @Setter
 @Getter
@@ -12,7 +12,5 @@ public class CreateBranchRequest {
 
     private String branchName;
 
-    private String companyId;
-
-    private GeoJsonPoint location;
+    private List<Double> location;
 }

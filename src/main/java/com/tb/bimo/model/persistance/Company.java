@@ -21,4 +21,6 @@ public class Company {
 
     @NotNull
     private String title;
+
+    private String logoUrl;
 }

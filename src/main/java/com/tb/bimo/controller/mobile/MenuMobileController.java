@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mobile/menu")
-public class MenuController {
+public class MenuMobileController {
 
     private final MenuService menuService;
 

@@ -18,8 +18,15 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         this.userSecurityService = userSecurityService;
     }
 
+    // TODO add controls.
     public boolean isCompanyAuthorized(String companyId) {
         log.debug("Checking if user is Admin of CompanyId:{}, user:{}", companyId, authentication.getName());
+        return true;
+    }
+
+    // TODO add controls.
+    public boolean isBranchAuthorized(String branchId) {
+        log.debug("Checking if user is authorized for BranchId:{}, user:{}", branchId, authentication.getName());
         return true;
     }
 

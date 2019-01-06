@@ -15,7 +15,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/mobile/order")
 @PreAuthorize("hasRole('MOBILE_USER')")
-public class OrderController {
+public class OrderMobileController {
 
     private final OrderService orderService;
 

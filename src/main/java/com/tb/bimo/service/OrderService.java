@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -59,10 +60,12 @@ public class OrderService {
                 .campaignId(basket.getCampaignId())
                 .companyId(basket.getCompanyId())
                 .companyName(basket.getCompanyName())
+                .branchId(basket.getBranchId())
                 .productList(basket.getProductList())
                 .totalPrice(payment.getPaidPrice().doubleValue())
                 .userId(userId)
                 .status(payment.getStatus())
+                .paymentId(payment.getPaymentId())
                 .build();
 
         orderRepository.save(order);
@@ -72,5 +75,17 @@ public class OrderService {
         return PlaceOrderResponse.builder().orderNumber(orderNumber).build();
     }
 
-    //public getOrdersByBranchId
+    public List<Order> getActiveOrdersByBranchId(String branchId) {
+        return orderRepository.findAllByBranchIdAndStatus(branchId, "success");
+    }
+
+    public void completeOrder(String orderId) {
+        orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."))
+                .setStatus("completed");
+    }
+
+    public void cancelOrder(String orderId) {
+        orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."))
+                .setStatus("canceled-by-restaurant");
+    }
 }

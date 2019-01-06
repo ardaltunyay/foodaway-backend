@@ -40,7 +40,7 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public MenuService menuService(MenuRepository menuRepository, ProductRepository productRepository, BranchRepository branchRepository) {
-        return new MenuService(menuRepository, productRepository, branchRepository);
+    public MenuService menuService(MenuRepository menuRepository, ProductRepository productRepository, CompanyRepository companyRepository, BranchRepository branchRepository) {
+        return new MenuService(menuRepository, productRepository, companyRepository, branchRepository);
     }
 }

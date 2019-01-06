@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubMenuWithProductId {
+
     private String title;
     private List<String> productList;
 }

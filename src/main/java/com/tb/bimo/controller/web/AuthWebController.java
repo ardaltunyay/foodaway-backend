@@ -2,14 +2,13 @@ package com.tb.bimo.controller.web;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.UserLoginRequest;
-import com.tb.bimo.model.persistance.User;
+import com.tb.bimo.model.enums.UserRole;
 import com.tb.bimo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,11 @@ public class AuthWebController {
         log.info("Trying to login with email {}", userLoginRequest.getEmail());
 
         try {
-            request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+            if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.RESTAURANT_USER) {
+                request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+            } else {
+                throw new ResourceNotFoundException("E-mail adresiniz yada şifreniz hatalıdır.");
+            }
         } catch (ServletException e) {
             log.warn("Login with email {} has failed with message {}", userLoginRequest.getEmail(), Optional.ofNullable(e.getMessage()).orElse("null"));
 

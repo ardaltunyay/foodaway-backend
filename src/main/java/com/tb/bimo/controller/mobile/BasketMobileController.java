@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/mobile/basket")
 @PreAuthorize("hasRole('MOBILE_USER')")
-public class BasketController {
+public class BasketMobileController {
 
     private final BasketService basketService;
 

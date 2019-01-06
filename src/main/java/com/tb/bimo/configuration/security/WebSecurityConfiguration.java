@@ -34,6 +34,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/mobile/auth").not().authenticated()
+                .antMatchers(HttpMethod.POST, "/backoffice/auth").not().authenticated()
+                .antMatchers(HttpMethod.POST, "/web/auth").not().authenticated()
                 .antMatchers(HttpMethod.POST, "/mobile/user").not().authenticated()//.hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
