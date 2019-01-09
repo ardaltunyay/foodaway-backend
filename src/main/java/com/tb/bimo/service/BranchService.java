@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class BranchService {
 
     public List<Branch> getBranchListByLocationNear(String latitude, String longitude, Double distance){
         return branchRepository.findByLocationNear(
-                new GeoJsonPoint(
+                new Point(
                         Double.valueOf(longitude),
                         Double.valueOf(latitude)
                 ),

@@ -3,7 +3,6 @@ package com.tb.bimo.model.persistance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tb.bimo.model.common.BasketProduct;
 import lombok.*;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -43,10 +42,10 @@ public class Basket {
     private List<BasketProduct> productList;
 
     @CreatedDate
-    private DateTime dateAdded;
+    private String dateAdded;
 
     @LastModifiedDate
-    private DateTime dateModified;
+    private String dateModified;
 
     public Double calculatePrice() {
         Double price = 0.00;

@@ -2,6 +2,7 @@ package com.tb.bimo.service;
 
 import com.tb.bimo.exception.BasketCompanyIdNotFoundException;
 import com.tb.bimo.exception.BasketProductIdNotFoundException;
+import com.tb.bimo.exception.ResourceAlreadyExistsException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.common.BasketProduct;
 import com.tb.bimo.model.dto.common.ProductIdQuantity;
@@ -47,6 +48,9 @@ public class BasketService {
 
     public Basket createBasket(String userId, CreateBasketRequest createBasketRequest) {
         Basket basket = basketMapper.createBasketRequestToBasket(createBasketRequest);
+        if (basketRepository.findByUserIdAndBranchId(userId, createBasketRequest.getBranchId()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Basket already exists with given branch.");
+        }
 
         List<BasketProduct> productList = new ArrayList<>();
         createBasketRequest.getProducts().forEach(productIdQuantity -> {
