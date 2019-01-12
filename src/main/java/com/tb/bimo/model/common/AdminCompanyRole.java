@@ -12,6 +12,6 @@ import lombok.*;
 public class AdminCompanyRole {
 
     String companyId;
-    Status companyAdminStatus;
+    String branchId;
     //Set<AdminRole> roles;
 }

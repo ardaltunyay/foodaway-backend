@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,5 +37,8 @@ public class User {
     private boolean isEnabled;
 
     @JsonIgnore
-    private Set<AdminCompanyRole> adminCompanyRoles;
+    private List<AdminCompanyRole> adminCompanyRoles;
+
+    @JsonIgnore
+    private List<AdminCompanyRole> authorizedBranches;
 }

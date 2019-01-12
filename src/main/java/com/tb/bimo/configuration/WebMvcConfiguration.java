@@ -13,7 +13,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowedOrigins("http://localhost:4200")
+                .allowedOrigins("http://localhost:5200", "http://localhost:4200")
                 .allowedHeaders("*")
                 .exposedHeaders("X-Auth-Token");
     }

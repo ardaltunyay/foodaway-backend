@@ -1,10 +1,16 @@
 package com.tb.bimo.configuration.security;
 
+import com.tb.bimo.exception.ResourceNotFoundException;
+import com.tb.bimo.model.common.AdminCompanyRole;
+import com.tb.bimo.repository.UserRepository;
 import com.tb.bimo.service.core.UserSecurityService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
+
+import java.util.List;
 
 @Slf4j
 public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
@@ -12,22 +18,44 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     private Object filterObject;
     private Object returnObject;
     private UserSecurityService userSecurityService;
+    private final UserRepository userRepository;
 
-    public CustomMethodSecurityExpressionRoot(Authentication authentication, UserSecurityService userSecurityService) {
+    public CustomMethodSecurityExpressionRoot(Authentication authentication, UserSecurityService userSecurityService, UserRepository userRepository) {
         super(authentication);
         this.userSecurityService = userSecurityService;
+        this.userRepository = userRepository;
     }
 
     // TODO add controls.
     public boolean isCompanyAuthorized(String companyId) {
+        String userId = authentication.getName();
         log.debug("Checking if user is Admin of CompanyId:{}, user:{}", companyId, authentication.getName());
-        return true;
+
+        List<AdminCompanyRole> adminCompanyRoleList = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found.")).getAdminCompanyRoles();
+
+        boolean isAuthorized = false;
+        for (AdminCompanyRole adminCompanyRole : adminCompanyRoleList) {
+            if (adminCompanyRole.getCompanyId().equals(companyId)) {
+                isAuthorized = true;
+            }
+        }
+        return isAuthorized;
     }
 
     // TODO add controls.
     public boolean isBranchAuthorized(String branchId) {
-        log.debug("Checking if user is authorized for BranchId:{}, user:{}", branchId, authentication.getName());
-        return true;
+        String userId = authentication.getName();
+        log.debug("Checking if user is authorized for BranchId:{}, user:{}", branchId, userId);
+
+        List<AdminCompanyRole> adminCompanyRoleList = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found.")).getAuthorizedBranches();
+
+        boolean isAuthorized = false;
+        for (AdminCompanyRole adminCompanyRole : adminCompanyRoleList) {
+            if (adminCompanyRole.getBranchId().equals(branchId)) {
+                isAuthorized = true;
+            }
+        }
+        return isAuthorized;
     }
 
     @Override
