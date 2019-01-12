@@ -19,7 +19,7 @@ public class BranchMobileController {
     private final BranchService branchService;
 
     @GetMapping
-    public BranchListByLocationResponse getBranchListByLocationNear(@RequestBody FindByLocationRequest findByLocationRequest) {
+    public BranchListByLocationResponse getBranchListByLocationNear(@RequestParam FindByLocationRequest findByLocationRequest) {
         return BranchListByLocationResponse.builder().branchList(branchService.getBranchListByLocationNear(
                 findByLocationRequest.getLatitude(),
                 findByLocationRequest.getLongitude(),
