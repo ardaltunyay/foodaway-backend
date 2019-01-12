@@ -7,7 +7,9 @@ spring:
     time-zone: UTC
   session:
     timeout: 10m
-
+  datasource:
+    tomcat:
+      max-age: 3600
 server:
   port: 8081
   servlet:
