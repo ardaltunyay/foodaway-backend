@@ -20,9 +20,6 @@ public class Campaign {
     private String id;
 
     @NotNull
-    private String title;
-
-    @NotNull
     private String description;
 
     @NotNull

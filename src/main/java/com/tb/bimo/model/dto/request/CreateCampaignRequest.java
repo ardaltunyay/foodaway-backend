@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 public class CreateCampaignRequest {
 
     @NotNull
-    private String title;
-    @NotNull
     private String description;
     @NotNull
     private String imageUrl;
