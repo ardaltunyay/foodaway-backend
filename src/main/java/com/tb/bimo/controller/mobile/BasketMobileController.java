@@ -40,7 +40,7 @@ public class BasketMobileController {
     }
 
     @DeleteMapping("/delete-product")
-    public void addProductToBasket(@RequestBody DeleteProductFromBasketRequest deleteProductFromBasketRequest, Principal principal) {
+    public void deleteProductFromBasket(@RequestBody DeleteProductFromBasketRequest deleteProductFromBasketRequest, Principal principal) {
         basketService.deleteProductFromBasket(principal.getName(), deleteProductFromBasketRequest);
     }
 
