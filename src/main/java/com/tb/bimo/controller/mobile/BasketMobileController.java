@@ -43,6 +43,11 @@ public class BasketMobileController {
         basketService.deleteProductFromBasket(principal.getName(), deleteProductFromBasketRequest);
     }
 
+    @PutMapping("/set-product")
+    public void setProductOnBasket(@RequestBody AddProductToBasketRequest addProductToBasketRequest, Principal principal) {
+        basketService.setProductOnBasket(principal.getName(), addProductToBasketRequest);
+    }
+
     @PostMapping
     public Basket createBasket(@RequestBody CreateBasketRequest createBasketRequest, Principal principal) {
         return basketService.createBasket(principal.getName(), createBasketRequest);

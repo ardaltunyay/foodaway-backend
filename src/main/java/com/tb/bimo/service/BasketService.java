@@ -164,4 +164,13 @@ public class BasketService {
         }
         basketRepository.save(basket);
     }
+
+    public void setProductOnBasket(String userId, AddProductToBasketRequest addProductToBasketRequest) {
+        Basket basket = basketRepository.findByUserIdAndBranchId(userId, addProductToBasketRequest.getBranchId()).orElseThrow(() -> new ResourceNotFoundException("Basket not found."));
+        for (BasketProduct basketProduct : basket.getProductList()) {
+            if (basketProduct.getProduct().getId().equals(addProductToBasketRequest.getProductId()))
+                basketProduct.setQuantity(addProductToBasketRequest.getQuantity());
+        }
+        basketRepository.save(basket);
+    }
 }

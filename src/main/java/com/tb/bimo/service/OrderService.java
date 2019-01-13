@@ -97,4 +97,15 @@ public class OrderService {
         order.setPreparingTime(Double.valueOf(time));
         orderRepository.save(order);
     }
+
+    public List<Order> getInactiveOrdersByBranchId(String branchId) {
+        return orderRepository.findAllByBranchIdAndStatusIn(branchId, Arrays.asList(OrderStatus.READY, OrderStatus.CANCELED_BY_BRANCH, OrderStatus.CANCELED_BY_USER, OrderStatus.CANCEL_REQUESTED));
+    }
+
+    public void revertOrder(String orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
+        order.setStatus(OrderStatus.PREPARING);
+        order.setPreparingTime(null);
+        orderRepository.save(order);
+    }
 }

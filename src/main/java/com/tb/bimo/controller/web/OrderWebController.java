@@ -19,8 +19,14 @@ public class OrderWebController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_RESTAURANT_USER') and isBranchAuthorized(#branchId)")
-    public List<Order> getActiveOrders(@PathVariable String branchId) {
-        return orderService.getActiveOrdersByBranchId(branchId);
+    public List<Order> getOrders(@PathVariable String branchId, @RequestParam String status) {
+        if (status.equals("active")) {
+            return orderService.getActiveOrdersByBranchId(branchId);
+        } else if (status.equals("inactive")) {
+            return orderService.getInactiveOrdersByBranchId(branchId);
+        } else {
+            return null;
+        }
     }
 
     @PutMapping("/{orderId}/complete")
@@ -39,5 +45,11 @@ public class OrderWebController {
     @PreAuthorize("hasRole('ROLE_RESTAURANT_USER') and isBranchAuthorized(#branchId)")
     public void cancelOrder(@PathVariable String branchId, @PathVariable String orderId, @RequestParam String time) {
         orderService.setTimer(orderId, time);
+    }
+
+    @PutMapping("/{orderId}/revert")
+    @PreAuthorize("hasRole('ROLE_RESTAURANT_USER') and isBranchAuthorized(#branchId)")
+    public void revertOrder(@PathVariable String branchId, @PathVariable String orderId) {
+        orderService.revertOrder(orderId);
     }
 }
