@@ -169,6 +169,7 @@ public class BasketService {
                     }))
                     .quantity(addProductToBasketRequest.getQuantity())
                     .build());
+            basket.get().setCampaignId(addProductToBasketRequest.getCampaignId());
             basketRepository.save(basket.get());
         } else {
             basketRepository.save(

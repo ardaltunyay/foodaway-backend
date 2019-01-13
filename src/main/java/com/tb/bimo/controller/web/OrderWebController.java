@@ -43,7 +43,7 @@ public class OrderWebController {
 
     @PutMapping("/{orderId}/set-timer")
     @PreAuthorize("hasRole('ROLE_RESTAURANT_USER') and isBranchAuthorized(#branchId)")
-    public void cancelOrder(@PathVariable String branchId, @PathVariable String orderId, @RequestParam String time) {
+    public void setTimer(@PathVariable String branchId, @PathVariable String orderId, @RequestParam String time) {
         orderService.setTimer(orderId, time);
     }
 
