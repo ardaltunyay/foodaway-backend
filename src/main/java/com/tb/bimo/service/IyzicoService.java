@@ -112,8 +112,8 @@ public class IyzicoService {
 
         CreatePaymentRequest request = new CreatePaymentRequest();
 
-        Double price = basket.calculatePrice();
-        Double paidPrice = price - price * campaign.getDiscountRate();
+        BigDecimal price = new BigDecimal(0);
+        Double paidPrice = basket.calculatePrice() - basket.calculatePrice() * campaign.getDiscountRate();
 
         List<BasketItem> basketItems = new ArrayList<>();
 
@@ -126,9 +126,10 @@ public class IyzicoService {
             basketItem.setName(basketProduct.getProduct().getTitle());
             basketItem.setCategory1(basketProduct.getProduct().getCompanyId());
             basketItem.setItemType(BasketItemType.PHYSICAL.name());
-            basketItem.setPrice(new BigDecimal(basketProduct.getProduct().getPrice() - campaign.getDiscountRate() * basketProduct.getProduct().getPrice()));
+            basketItem.setPrice(new BigDecimal(basketProduct.getProduct().getPrice()));
 
             for (int i=0; i<basketProduct.getQuantity(); i++) {
+                price = price.add(basketItem.getPrice());
                 basketItems.add(basketItem);
             }
         }
@@ -136,7 +137,7 @@ public class IyzicoService {
 
         request.setLocale(Locale.TR.getValue());
         request.setConversationId(orderNumber);
-        request.setPrice(new BigDecimal(price));
+        request.setPrice(price);
         request.setPaidPrice(new BigDecimal(paidPrice));
         request.setCurrency(Currency.TRY.name());
         request.setInstallment(1);
