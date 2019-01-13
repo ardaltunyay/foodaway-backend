@@ -80,7 +80,11 @@ public class BasketService {
             basketResponseList.add(basketResponse);
         }
 
-        return basketResponseList;
+        if (basketResponseList.isEmpty()) {
+            throw new ResourceNotFoundException("No basket found for user.");
+        } else {
+            return basketResponseList;
+        }
     }
 
     public Basket createBasket(String userId, CreateBasketRequest createBasketRequest) {
