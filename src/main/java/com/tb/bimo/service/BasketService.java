@@ -199,6 +199,9 @@ public class BasketService {
                 basket.getProductList().remove(basketProduct);
                 log.info("REMOVED SUCCESSFULLY!!");
             }
+            if (basket.getProductList().size() == 0) {
+                break;
+            }
         }
         if (basket.getProductList().isEmpty()) {
             basketRepository.delete(basket);
