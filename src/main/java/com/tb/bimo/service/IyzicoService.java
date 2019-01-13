@@ -73,6 +73,8 @@ public class IyzicoService {
         paymentCard.setRegisterCard(0);
         request.setPaymentCard(paymentCard);
 
+        // DUMMY DATA TO REACH IYZICO TEST SANDBOX
+        // REAL USER DATA WILL BE USED IN PRODUCTION ENVIRONMENT
         Buyer buyer = new Buyer();
         buyer.setId(user.getId());
         buyer.setName("John");
@@ -124,7 +126,7 @@ public class IyzicoService {
             basketItem.setName(basketProduct.getProduct().getTitle());
             basketItem.setCategory1(basketProduct.getProduct().getCompanyId());
             basketItem.setItemType(BasketItemType.PHYSICAL.name());
-            basketItem.setPrice(new BigDecimal(basketProduct.getProduct().getPrice()));
+            basketItem.setPrice(new BigDecimal(basketProduct.getProduct().getPrice() - campaign.getDiscountRate() * basketProduct.getProduct().getPrice()));
 
             for (int i=0; i<basketProduct.getQuantity(); i++) {
                 basketItems.add(basketItem);
@@ -151,6 +153,8 @@ public class IyzicoService {
         paymentCard.setRegisterCard(0);
         request.setPaymentCard(paymentCard);
 
+        // DUMMY DATA TO REACH IYZICO TEST SANDBOX
+        // REAL USER DATA WILL BE USED IN PRODUCTION ENVIRONMENT
         Buyer buyer = new Buyer();
         buyer.setId(user.getId());
         buyer.setName("John");
