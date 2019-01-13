@@ -50,7 +50,7 @@ public class Order {
     private List<BasketProduct> productList;
 
     @NotNull
-    private Double totalPrice;
+    private Double paidPrice;
 
     @NotNull
     private String paymentStatus;

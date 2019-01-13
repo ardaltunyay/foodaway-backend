@@ -80,7 +80,7 @@ public class OrderService {
                     .companyName(basket.getCompanyName())
                     .branchId(basket.getBranchId())
                     .productList(basket.getProductList())
-                    .totalPrice(payment.getPaidPrice().doubleValue())
+                    .paidPrice(payment.getPaidPrice().doubleValue())
                     .userId(userId)
                     .paymentStatus(payment.getStatus())
                     .status(payment.getStatus().equals("success") ? OrderStatus.PAYMENT_SUCCESS : OrderStatus.PAYMENT_FAILED)

@@ -114,8 +114,10 @@ public class IyzicoService {
         Double paidPrice = price - price * campaign.getDiscountRate();
 
         List<BasketItem> basketItems = new ArrayList<>();
-        while (basket.getProductList().iterator().hasNext()) {
-            BasketProduct basketProduct = basket.getProductList().iterator().next();
+
+        ListIterator litr = basket.getProductList().listIterator();
+        while (litr.hasNext()) {
+            BasketProduct basketProduct = (BasketProduct) litr.next();
 
             BasketItem basketItem = new BasketItem();
             basketItem.setId(basketProduct.getProduct().getId());

@@ -34,11 +34,13 @@ public class CampaignMobileController {
 
         nearBranches.forEach(branch -> {
             List<Campaign> campaignList = campaignService.getCampaignListByCompany(branch.getCompanyId());
-            if (campaignList.iterator().hasNext()) {
+
+            ListIterator litr = campaignList.listIterator();
+            if (litr.hasNext()) {
                 companyCampaignList.add(
                         CompanyCampaign
                             .builder()
-                            .companyName(campaignList.iterator().next().getCompanyName())
+                            .companyName(((Campaign) litr.next()).getCompanyName())
                             .branchId(branch.getId())
                             .campaignList(campaignList)
                             .build()
