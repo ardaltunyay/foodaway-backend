@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Slf4j
@@ -20,7 +21,7 @@ public class OrderMobileController {
     private final OrderService orderService;
 
     @PostMapping
-    public PlaceOrderResponse placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest, Principal principal) {
+    public PlaceOrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest placeOrderRequest, Principal principal) {
         return orderService.placeOrder(principal.getName(), placeOrderRequest);
     }
 }

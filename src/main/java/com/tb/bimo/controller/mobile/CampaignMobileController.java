@@ -1,7 +1,6 @@
 package com.tb.bimo.controller.mobile;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
-import com.tb.bimo.model.dto.request.FindByLocationRequest;
 import com.tb.bimo.model.dto.common.CompanyCampaign;
 import com.tb.bimo.model.dto.response.CampaignListByLocationResponse;
 import com.tb.bimo.model.persistance.Branch;
