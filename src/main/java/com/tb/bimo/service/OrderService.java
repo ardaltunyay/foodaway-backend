@@ -4,6 +4,7 @@ import com.iyzipay.model.Payment;
 import com.tb.bimo.exception.BadRequestException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
+import com.tb.bimo.model.dto.response.OrderResponse;
 import com.tb.bimo.model.dto.response.PlaceOrderResponse;
 import com.tb.bimo.model.enums.OrderStatus;
 import com.tb.bimo.model.persistance.Basket;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.DateFormat;
 import java.util.*;
 
 @Slf4j
@@ -128,5 +130,28 @@ public class OrderService {
         order.setStatus(OrderStatus.PREPARING);
         order.setPreparingTime(null);
         orderRepository.save(order);
+    }
+
+    public List<OrderResponse> getOrders(String userId) {
+        List<Order> orderList = orderRepository.findAllByUserId(userId);
+        List<OrderResponse> orderResponseList = new ArrayList<>();
+
+        for (Order order : orderList) {
+            orderResponseList.add(
+                OrderResponse.builder()
+                        .companyName(order.getCompanyName())
+                        .dateCreated(order.getDateCreated().toString("d MMMM yyyy HH:mm", new Locale("tr", "TR")))
+                        .dateReady(order.getStatus() == OrderStatus.PREPARING ?
+                                order.getDateModified().plusMinutes(order.getPreparingTime().intValue()).toString("HH:mm", new Locale("tr", "TR"))
+                                : null)
+                        .orderNumber(order.getOrderNumber())
+                        .paidPrice(order.getPaidPrice())
+                        .productList(order.getProductList())
+                        .status(order.getStatus())
+                        .build()
+            );
+        }
+        Collections.reverse(orderResponseList);
+        return orderResponseList;
     }
 }

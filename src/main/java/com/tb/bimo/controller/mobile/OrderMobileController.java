@@ -1,6 +1,7 @@
 package com.tb.bimo.controller.mobile;
 
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
+import com.tb.bimo.model.dto.response.OrderResponse;
 import com.tb.bimo.model.dto.response.PlaceOrderResponse;
 import com.tb.bimo.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,5 +25,10 @@ public class OrderMobileController {
     @PostMapping
     public PlaceOrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest placeOrderRequest, Principal principal) {
         return orderService.placeOrder(principal.getName(), placeOrderRequest);
+    }
+
+    @GetMapping
+    public List<OrderResponse> getOrders(Principal principal) {
+        return orderService.getOrders(principal.getName());
     }
 }
