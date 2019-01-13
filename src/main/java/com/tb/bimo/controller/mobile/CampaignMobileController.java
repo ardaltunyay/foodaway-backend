@@ -10,10 +10,7 @@ import com.tb.bimo.service.BranchService;
 import com.tb.bimo.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -27,11 +24,11 @@ public class CampaignMobileController {
     private final BranchService branchService;
 
     @GetMapping
-    public CampaignListByLocationResponse getCampaignListByLocationNear(@RequestBody FindByLocationRequest findByLocationRequest) {
+    public CampaignListByLocationResponse getCampaignListByLocationNear(@RequestParam String latitude, @RequestParam String longitude, @RequestParam String distance) {
         List<Branch> nearBranches = branchService.getBranchListByLocationNear(
-                findByLocationRequest.getLatitude(),
-                findByLocationRequest.getLongitude(),
-                findByLocationRequest.getDistance()
+                latitude,
+                longitude,
+                Double.valueOf(distance)
         );
 
         Set<CompanyCampaign> companyCampaignList = new HashSet<>();
@@ -56,6 +53,4 @@ public class CampaignMobileController {
             return CampaignListByLocationResponse.builder().campaignList(companyCampaignList).build();
         }
     }
-
-
 }
