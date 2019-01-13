@@ -30,8 +30,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CampaignService campaignService(CampaignRepository campaignRepository) {
-        return new CampaignService(campaignRepository);
+    public CampaignService campaignService(CampaignRepository campaignRepository, CompanyRepository companyRepository) {
+        return new CampaignService(campaignRepository, companyRepository);
     }
 
     @Bean

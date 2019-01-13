@@ -26,6 +26,9 @@ public class Campaign {
     private String description;
 
     @NotNull
+    private String imageUrl;
+
+    @NotNull
     private String companyId;
 
     @NotNull

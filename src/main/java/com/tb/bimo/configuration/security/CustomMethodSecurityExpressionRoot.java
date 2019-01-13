@@ -25,7 +25,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         this.userRepository = userRepository;
     }
 
-    // TODO add controls.
     public boolean isCompanyAuthorized(String companyId) {
         String userId = authentication.getName();
         log.debug("Checking if user is Admin of CompanyId:{}, user:{}", companyId, authentication.getName());
@@ -41,7 +40,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         return isAuthorized;
     }
 
-    // TODO add controls.
     public boolean isBranchAuthorized(String branchId) {
         String userId = authentication.getName();
         log.debug("Checking if user is authorized for BranchId:{}, user:{}", branchId, userId);
