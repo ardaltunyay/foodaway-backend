@@ -192,7 +192,11 @@ public class BasketService {
             if (basketProduct.getProduct().getId().equals(deleteProductFromBasketRequest.getProductId()))
                 basket.getProductList().remove(basketProduct);
         }
-        basketRepository.save(basket);
+        if (basket.getProductList().isEmpty()) {
+            basketRepository.delete(basket);
+        } else {
+            basketRepository.save(basket);
+        }
     }
 
     public void setProductOnBasket(String userId, AddProductToBasketRequest addProductToBasketRequest) {
