@@ -1,6 +1,8 @@
 package com.tb.bimo.service;
 
 import com.iyzipay.model.Payment;
+import com.sun.deploy.net.HttpResponse;
+import com.tb.bimo.exception.BadRequestException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
 import com.tb.bimo.model.dto.response.PlaceOrderResponse;
@@ -15,8 +17,10 @@ import com.tb.bimo.repository.OrderRepository;
 import com.tb.bimo.repository.UserRepository;
 import com.tb.bimo.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 
@@ -54,25 +58,45 @@ public class OrderService {
             payment = iyzicoService.createPayment(user, placeOrderRequest, basket, orderNumber);
         }
 
-        Order order = Order
-                .builder()
-                .orderNumber(orderNumber)
-                .campaignId(basket.getCampaignId())
-                .companyId(basket.getCompanyId())
-                .companyName(basket.getCompanyName())
-                .branchId(basket.getBranchId())
-                .productList(basket.getProductList())
-                .totalPrice(payment.getPaidPrice().doubleValue())
-                .userId(userId)
-                .paymentStatus(payment.getStatus())
-                .status(payment.getStatus().equals("success") ? OrderStatus.PAYMENT_SUCCESS : OrderStatus.PAYMENT_FAILED)
-                .paymentId(payment.getPaymentId())
-                .build();
+        if (payment.getStatus().equals("failure")) {
+            Order order = Order
+                    .builder()
+                    .orderNumber(orderNumber)
+                    .campaignId(basket.getCampaignId())
+                    .companyId(basket.getCompanyId())
+                    .companyName(basket.getCompanyName())
+                    .branchId(basket.getBranchId())
+                    .productList(basket.getProductList())
+                    .userId(userId)
+                    .paymentStatus(payment.getStatus())
+                    .status(payment.getStatus().equals("success") ? OrderStatus.PAYMENT_SUCCESS : OrderStatus.PAYMENT_FAILED)
+                    .build();
+            orderRepository.save(order);
 
-        orderRepository.save(order);
-        basketRepository.deleteById(basket.getId());
+            throw new BadRequestException(payment.getErrorMessage());
+        } else if (payment.getStatus().equals("success")) {
+            Order order = Order
+                    .builder()
+                    .orderNumber(orderNumber)
+                    .campaignId(basket.getCampaignId())
+                    .companyId(basket.getCompanyId())
+                    .companyName(basket.getCompanyName())
+                    .branchId(basket.getBranchId())
+                    .productList(basket.getProductList())
+                    .totalPrice(payment.getPaidPrice().doubleValue())
+                    .userId(userId)
+                    .paymentStatus(payment.getStatus())
+                    .status(payment.getStatus().equals("success") ? OrderStatus.PAYMENT_SUCCESS : OrderStatus.PAYMENT_FAILED)
+                    .paymentId(payment.getPaymentId())
+                    .build();
 
-        return PlaceOrderResponse.builder().orderNumber(orderNumber).build();
+            orderRepository.save(order);
+            basketRepository.deleteById(basket.getId());
+
+            return PlaceOrderResponse.builder().orderNumber(orderNumber).build();
+        } else {
+            throw new BadRequestException(payment.getErrorMessage());
+        }
     }
 
     public List<Order> getActiveOrdersByBranchId(String branchId) {
