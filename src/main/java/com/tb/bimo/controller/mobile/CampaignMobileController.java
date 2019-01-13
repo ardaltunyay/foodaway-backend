@@ -1,7 +1,9 @@
 package com.tb.bimo.controller.mobile;
 
+import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.FindByLocationRequest;
 import com.tb.bimo.model.dto.common.CompanyCampaign;
+import com.tb.bimo.model.dto.response.CampaignListByLocationResponse;
 import com.tb.bimo.model.persistance.Branch;
 import com.tb.bimo.model.persistance.Campaign;
 import com.tb.bimo.service.BranchService;
@@ -25,7 +27,7 @@ public class CampaignMobileController {
     private final BranchService branchService;
 
     @GetMapping
-    public Set<CompanyCampaign> getCampaignListByLocationNear(@RequestBody FindByLocationRequest findByLocationRequest) {
+    public CampaignListByLocationResponse getCampaignListByLocationNear(@RequestBody FindByLocationRequest findByLocationRequest) {
         List<Branch> nearBranches = branchService.getBranchListByLocationNear(
                 findByLocationRequest.getLatitude(),
                 findByLocationRequest.getLongitude(),
@@ -48,7 +50,11 @@ public class CampaignMobileController {
             }
         });
 
-        return companyCampaignList;
+        if (companyCampaignList.isEmpty()) {
+            throw new ResourceNotFoundException("No campaign found near given location.");
+        } else {
+            return CampaignListByLocationResponse.builder().campaignList(companyCampaignList).build();
+        }
     }
 
 
