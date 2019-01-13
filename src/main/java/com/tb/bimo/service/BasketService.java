@@ -191,16 +191,12 @@ public class BasketService {
     public void deleteProductFromBasket(String userId, DeleteProductFromBasketRequest deleteProductFromBasketRequest) {
         log.info("Deleting product: {}, from branch: {}'s basket", deleteProductFromBasketRequest.getProductId(), deleteProductFromBasketRequest.getBranchId());
         Basket basket = basketRepository.findByUserIdAndBranchId(userId, deleteProductFromBasketRequest.getBranchId()).orElseThrow(() -> new ResourceNotFoundException("Basket not found."));
-        log.info(basket.getId());
         for (BasketProduct basketProduct : basket.getProductList()) {
-            log.info("Basket product id: {}", basketProduct.getProduct().getId());
             if (basketProduct.getProduct().getId().equals(deleteProductFromBasketRequest.getProductId())) {
-                log.info("Basket product found!!");
                 basket.getProductList().remove(basketProduct);
-                log.info("REMOVED SUCCESSFULLY!!");
-            }
-            if (basket.getProductList().size() == 0) {
-                break;
+                if (basket.getProductList().size() == 0) {
+                    break;
+                }
             }
         }
         if (basket.getProductList().isEmpty()) {
