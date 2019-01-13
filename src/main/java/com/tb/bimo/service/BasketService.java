@@ -11,13 +11,12 @@ import com.tb.bimo.model.dto.request.AddProductToBasketRequest;
 import com.tb.bimo.model.dto.request.CreateBasketRequest;
 import com.tb.bimo.model.dto.request.DeleteProductFromBasketRequest;
 import com.tb.bimo.model.dto.request.UpdateBasketRequest;
+import com.tb.bimo.model.dto.response.BasketResponse;
 import com.tb.bimo.model.persistance.Basket;
 import com.tb.bimo.model.persistance.Branch;
+import com.tb.bimo.model.persistance.Campaign;
 import com.tb.bimo.model.persistance.Company;
-import com.tb.bimo.repository.BasketRepository;
-import com.tb.bimo.repository.BranchRepository;
-import com.tb.bimo.repository.CompanyRepository;
-import com.tb.bimo.repository.ProductRepository;
+import com.tb.bimo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
@@ -32,6 +31,7 @@ public class BasketService {
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
     private final BranchRepository branchRepository;
+    private final CampaignRepository campaignRepository;
     private BasketMapper basketMapper = Mappers.getMapper(BasketMapper.class);
 
     public Basket getBasketOfUserByBranchId(String userId, String branchId) {
@@ -45,10 +45,37 @@ public class BasketService {
         }
     }
 
-    public List<Basket> getAllBasketsOfUser(String userId) {
+    public List<BasketResponse> getAllBasketsOfUser(String userId) {
         log.info("Fetching all available baskets of user: {}", userId);
 
-        return basketRepository.findAllByUserId(userId);
+        List<Basket> basketList = basketRepository.findAllByUserId(userId);
+        List<BasketResponse> basketResponseList = new ArrayList<>();
+        for (Basket basket : basketList) {
+            Double price = basket.calculatePrice();
+
+            BasketResponse basketResponse = BasketResponse.builder()
+                    .companyName(basket.getCompanyName())
+                    .branchId(basket.getBranchId())
+                    .companyId(basket.getCompanyId())
+                    .dateAdded(basket.getDateAdded())
+                    .dateModified(basket.getDateModified())
+                    .id(basket.getId())
+                    .productList(basket.getProductList())
+                    .totalPrice(basket.calculatePrice())
+                    .paidPrice(basket.calculatePrice())
+                    .build();
+
+            if (basket.getCampaignId() != null) {
+                Campaign campaign = campaignRepository.findByCompanyIdAndId(basket.getCompanyId(), basket.getCampaignId()).orElseThrow(() -> new ResourceNotFoundException("Campaign not found."));
+                Double paidPrice = price - price * campaign.getDiscountRate();
+                basketResponse.setPaidPrice(paidPrice);
+                basketResponse.setCampaignId(campaign.getId());
+            }
+
+            basketResponseList.add(basketResponse);
+        }
+
+        return basketResponseList;
     }
 
     public Basket createBasket(String userId, CreateBasketRequest createBasketRequest) {

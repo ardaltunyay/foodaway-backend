@@ -4,6 +4,7 @@ import com.tb.bimo.model.dto.request.AddProductToBasketRequest;
 import com.tb.bimo.model.dto.request.CreateBasketRequest;
 import com.tb.bimo.model.dto.request.DeleteProductFromBasketRequest;
 import com.tb.bimo.model.dto.request.UpdateBasketRequest;
+import com.tb.bimo.model.dto.response.BasketResponse;
 import com.tb.bimo.model.persistance.Basket;
 import com.tb.bimo.service.BasketService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class BasketMobileController {
     }
 
     @GetMapping("/all")
-    public List<Basket> getAllBasketsOfUser(Principal principal) {
+    public List<BasketResponse> getAllBasketsOfUser(Principal principal) {
         return basketService.getAllBasketsOfUser(principal.getName());
     }
 

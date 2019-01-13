@@ -37,7 +37,7 @@ public class OrderService {
 
         Optional<Campaign> optionalCampaign = Optional.empty();
         if (basket.getCampaignId() != null) {
-            optionalCampaign = campaignRepository.findById(basket.getCampaignId());
+            optionalCampaign = campaignRepository.findByCompanyIdAndId(basket.getCompanyId(), basket.getCampaignId());
         }
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found."));
