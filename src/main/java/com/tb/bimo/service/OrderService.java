@@ -1,7 +1,6 @@
 package com.tb.bimo.service;
 
 import com.iyzipay.model.Payment;
-import com.sun.deploy.net.HttpResponse;
 import com.tb.bimo.exception.BadRequestException;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
@@ -17,7 +16,6 @@ import com.tb.bimo.repository.OrderRepository;
 import com.tb.bimo.repository.UserRepository;
 import com.tb.bimo.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
