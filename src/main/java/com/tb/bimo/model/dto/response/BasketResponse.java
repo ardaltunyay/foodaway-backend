@@ -20,6 +20,6 @@ public class BasketResponse {
     private List<BasketProduct> productList;
     private String dateAdded;
     private String dateModified;
-    private Double paidPrice;
-    private Double totalPrice;
+    private String paidPrice;
+    private String totalPrice;
 }

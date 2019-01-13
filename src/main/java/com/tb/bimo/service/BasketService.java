@@ -66,14 +66,14 @@ public class BasketService {
                     .dateModified(basket.getDateModified())
                     .id(basket.getId())
                     .productList(basket.getProductList())
-                    .totalPrice(basket.calculatePrice())
-                    .paidPrice(basket.calculatePrice())
+                    .totalPrice(String.format("%.2f", basket.calculatePrice()))
+                    .paidPrice(String.format("%.2f", basket.calculatePrice()))
                     .build();
 
             if (basket.getCampaignId() != null) {
                 Campaign campaign = campaignRepository.findByCompanyIdAndId(basket.getCompanyId(), basket.getCampaignId()).orElseThrow(() -> new ResourceNotFoundException("Campaign not found."));
                 Double paidPrice = price - price * campaign.getDiscountRate();
-                basketResponse.setPaidPrice(paidPrice);
+                basketResponse.setPaidPrice(String.format("%.2f", paidPrice));
                 basketResponse.setCampaignId(campaign.getId());
             }
 
