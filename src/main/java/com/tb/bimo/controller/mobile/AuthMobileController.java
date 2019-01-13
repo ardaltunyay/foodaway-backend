@@ -34,6 +34,7 @@ public class AuthMobileController {
 
         try {
             if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.MOBILE_USER) {
+                request.getSession().setMaxInactiveInterval(8553600); //99 days of token expire time
                 request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
             } else {
                 throw new ResourceNotFoundException("E-mail adresiniz yada şifreniz hatalıdır.");

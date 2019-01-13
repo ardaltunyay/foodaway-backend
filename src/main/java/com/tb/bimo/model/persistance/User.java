@@ -40,5 +40,5 @@ public class User {
     private List<AdminCompanyRole> adminCompanyRoles;
 
     @JsonIgnore
-    private List<AdminCompanyRole> authorizedBranches;
+    private String authorizedBranch;
 }

@@ -4,6 +4,7 @@ import com.iyzipay.model.Payment;
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.PlaceOrderRequest;
 import com.tb.bimo.model.dto.response.PlaceOrderResponse;
+import com.tb.bimo.model.enums.OrderStatus;
 import com.tb.bimo.model.persistance.Basket;
 import com.tb.bimo.model.persistance.Campaign;
 import com.tb.bimo.model.persistance.Order;
@@ -17,8 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -64,28 +64,37 @@ public class OrderService {
                 .productList(basket.getProductList())
                 .totalPrice(payment.getPaidPrice().doubleValue())
                 .userId(userId)
-                .status(payment.getStatus())
+                .paymentStatus(payment.getStatus())
+                .status(payment.getStatus().equals("success") ? OrderStatus.PAYMENT_SUCCESS : OrderStatus.PAYMENT_FAILED)
                 .paymentId(payment.getPaymentId())
                 .build();
 
         orderRepository.save(order);
         basketRepository.deleteById(basket.getId());
 
-        // TODO throw a new event of sending notification to the restaurant screen
         return PlaceOrderResponse.builder().orderNumber(orderNumber).build();
     }
 
     public List<Order> getActiveOrdersByBranchId(String branchId) {
-        return orderRepository.findAllByBranchIdAndStatus(branchId, "success");
+        return orderRepository.findAllByBranchIdAndStatusIn(branchId, Arrays.asList(OrderStatus.PAYMENT_SUCCESS, OrderStatus.PREPARING));
     }
 
     public void completeOrder(String orderId) {
-        orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."))
-                .setStatus("completed");
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
+        order.setStatus(OrderStatus.READY);
+        orderRepository.save(order);
     }
 
     public void cancelOrder(String orderId) {
-        orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."))
-                .setStatus("canceled-by-restaurant");
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
+        order.setStatus(OrderStatus.CANCELED_BY_BRANCH);
+        orderRepository.save(order);
+    }
+
+    public void setTimer(String orderId, String time) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
+        order.setStatus(OrderStatus.PREPARING);
+        order.setPreparingTime(Double.valueOf(time));
+        orderRepository.save(order);
     }
 }

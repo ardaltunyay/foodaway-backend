@@ -2,6 +2,7 @@ package com.tb.bimo.model.persistance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tb.bimo.model.common.BasketProduct;
+import com.tb.bimo.model.enums.OrderStatus;
 import lombok.*;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
@@ -52,7 +53,12 @@ public class Order {
     private Double totalPrice;
 
     @NotNull
-    private String status;
+    private String paymentStatus;
+
+    @NotNull
+    private OrderStatus status;
+
+    private Double preparingTime;
 
     @JsonIgnore
     @NotNull
@@ -61,7 +67,6 @@ public class Order {
     @CreatedDate
     private DateTime dateCreated;
 
-    @JsonIgnore
     @LastModifiedDate
     private DateTime dateModified;
 }

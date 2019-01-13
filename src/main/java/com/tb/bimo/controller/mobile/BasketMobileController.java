@@ -1,6 +1,8 @@
 package com.tb.bimo.controller.mobile;
 
+import com.tb.bimo.model.dto.request.AddProductToBasketRequest;
 import com.tb.bimo.model.dto.request.CreateBasketRequest;
+import com.tb.bimo.model.dto.request.DeleteProductFromBasketRequest;
 import com.tb.bimo.model.dto.request.UpdateBasketRequest;
 import com.tb.bimo.model.persistance.Basket;
 import com.tb.bimo.service.BasketService;
@@ -29,6 +31,16 @@ public class BasketMobileController {
     @GetMapping("/all")
     public List<Basket> getAllBasketsOfUser(Principal principal) {
         return basketService.getAllBasketsOfUser(principal.getName());
+    }
+
+    @PostMapping("/add-product")
+    public void addProductToBasket(@RequestBody AddProductToBasketRequest addProductToBasketRequest, Principal principal) {
+        basketService.addProductToBasket(principal.getName(), addProductToBasketRequest);
+    }
+
+    @DeleteMapping("/delete-product")
+    public void addProductToBasket(@RequestBody DeleteProductFromBasketRequest deleteProductFromBasketRequest, Principal principal) {
+        basketService.deleteProductFromBasket(principal.getName(), deleteProductFromBasketRequest);
     }
 
     @PostMapping

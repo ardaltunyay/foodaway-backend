@@ -5,7 +5,6 @@ import com.tb.bimo.model.common.AdminCompanyRole;
 import com.tb.bimo.repository.UserRepository;
 import com.tb.bimo.service.core.UserSecurityService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
@@ -47,15 +46,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         String userId = authentication.getName();
         log.debug("Checking if user is authorized for BranchId:{}, user:{}", branchId, userId);
 
-        List<AdminCompanyRole> adminCompanyRoleList = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found.")).getAuthorizedBranches();
-
-        boolean isAuthorized = false;
-        for (AdminCompanyRole adminCompanyRole : adminCompanyRoleList) {
-            if (adminCompanyRole.getBranchId().equals(branchId)) {
-                isAuthorized = true;
-            }
-        }
-        return isAuthorized;
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found.")).getAuthorizedBranch().equals(branchId);
     }
 
     @Override

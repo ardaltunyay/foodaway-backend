@@ -34,6 +34,7 @@ public class AuthBackofficeController {
 
         try {
             if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.CONTENT_MANAGER) {
+                request.getSession().setMaxInactiveInterval(8553600); //99 days of token expire time
                 request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
             } else {
                 throw new ResourceNotFoundException("E-mail adresiniz yada şifreniz hatalıdır.");

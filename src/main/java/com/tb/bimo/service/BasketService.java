@@ -7,18 +7,22 @@ import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.common.BasketProduct;
 import com.tb.bimo.model.dto.common.ProductIdQuantity;
 import com.tb.bimo.model.dto.mapper.BasketMapper;
+import com.tb.bimo.model.dto.request.AddProductToBasketRequest;
 import com.tb.bimo.model.dto.request.CreateBasketRequest;
+import com.tb.bimo.model.dto.request.DeleteProductFromBasketRequest;
 import com.tb.bimo.model.dto.request.UpdateBasketRequest;
 import com.tb.bimo.model.persistance.Basket;
+import com.tb.bimo.model.persistance.Branch;
+import com.tb.bimo.model.persistance.Company;
 import com.tb.bimo.repository.BasketRepository;
+import com.tb.bimo.repository.BranchRepository;
 import com.tb.bimo.repository.CompanyRepository;
 import com.tb.bimo.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class BasketService {
     private final BasketRepository basketRepository;
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
+    private final BranchRepository branchRepository;
     private BasketMapper basketMapper = Mappers.getMapper(BasketMapper.class);
 
     public Basket getBasketOfUserByBranchId(String userId, String branchId) {
@@ -103,5 +108,60 @@ public class BasketService {
                 }))
                 .quantity(productIdQuantity.getQuantity())
                 .build();
+    }
+
+    public void addProductToBasket(String userId, AddProductToBasketRequest addProductToBasketRequest) {
+        Branch branch = branchRepository.findById(addProductToBasketRequest.getBranchId()).orElseThrow(
+                () -> new ResourceNotFoundException("Branch not found."));
+        Company company = companyRepository.findById(branch.getCompanyId()).orElseThrow(
+                () -> new ResourceNotFoundException("Company not found."));
+
+        Optional<Basket> basket = basketRepository.findByUserIdAndBranchId(userId, addProductToBasketRequest.getBranchId());
+
+        if (basket.isPresent()) {
+            boolean productExists = false;
+            for (BasketProduct basketProduct : basket.get().getProductList()) {
+                if (basketProduct.getProduct().getId().equals(addProductToBasketRequest.getProductId())) {
+                    productExists = true;
+                    basketProduct.setQuantity(basketProduct.getQuantity() + addProductToBasketRequest.getQuantity());
+                }
+            }
+            if (!productExists) basket.get().getProductList().add(BasketProduct.builder()
+                    .product(productRepository.findById(addProductToBasketRequest.getProductId()).orElseThrow(() -> {
+                        log.error("Invalid product id {} given to add basket.", addProductToBasketRequest.getProductId());
+                        return new BasketProductIdNotFoundException("Invalid product id given.");
+                    }))
+                    .quantity(addProductToBasketRequest.getQuantity())
+                    .build());
+            basketRepository.save(basket.get());
+        } else {
+            basketRepository.save(
+                    Basket.builder()
+                            .branchId(addProductToBasketRequest.getBranchId())
+                            .campaignId(addProductToBasketRequest.getCampaignId())
+                            .companyId(company.getId())
+                            .companyName(company.getTitle())
+                            .productList(
+                                    Collections.singletonList(BasketProduct.builder()
+                                            .product(productRepository.findById(addProductToBasketRequest.getProductId()).orElseThrow(() -> {
+                                                log.error("Invalid product id {} given to add basket.", addProductToBasketRequest.getProductId());
+                                                return new BasketProductIdNotFoundException("Invalid product id given.");
+                                            }))
+                                            .quantity(addProductToBasketRequest.getQuantity())
+                                            .build())
+                            )
+                            .userId(userId)
+                            .build()
+            );
+        }
+    }
+
+    public void deleteProductFromBasket(String userId, DeleteProductFromBasketRequest deleteProductFromBasketRequest) {
+        Basket basket = basketRepository.findByUserIdAndBranchId(userId, deleteProductFromBasketRequest.getBranchId()).orElseThrow(() -> new ResourceNotFoundException("Basket not found."));
+        for (BasketProduct basketProduct : basket.getProductList()) {
+            if (basketProduct.getProduct().getId().equals(deleteProductFromBasketRequest.getProductId()))
+                basket.getProductList().remove(basketProduct);
+        }
+        basketRepository.save(basket);
     }
 }

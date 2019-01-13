@@ -2,6 +2,7 @@ package com.tb.bimo.controller.web;
 
 import com.tb.bimo.exception.ResourceNotFoundException;
 import com.tb.bimo.model.dto.request.UserLoginRequest;
+import com.tb.bimo.model.dto.response.WebAuthResponse;
 import com.tb.bimo.model.enums.UserRole;
 import com.tb.bimo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,12 @@ public class AuthWebController {
     @SneakyThrows
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void login(@Validated @RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public WebAuthResponse login(@Validated @RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         log.info("Trying to login with email {}", userLoginRequest.getEmail());
 
         try {
             if (userService.getUserByEmail(userLoginRequest.getEmail()).getRole() == UserRole.RESTAURANT_USER) {
+                request.getSession().setMaxInactiveInterval(8553600); //99 days of token expire time
                 request.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
             } else {
                 throw new ResourceNotFoundException("E-mail adresiniz yada şifreniz hatalıdır.");
@@ -46,5 +48,10 @@ public class AuthWebController {
         }
 
         log.info("Login with email {} is successful.", userLoginRequest.getEmail());
+
+        return WebAuthResponse
+                .builder()
+                .authorizedBranchId(userService.getAuthorizedBranchOfRestaurantUser(userLoginRequest.getEmail()))
+                .build();
     }
 }
