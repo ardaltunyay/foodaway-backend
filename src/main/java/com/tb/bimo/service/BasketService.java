@@ -51,6 +51,11 @@ public class BasketService {
         List<Basket> basketList = basketRepository.findAllByUserId(userId);
         List<BasketResponse> basketResponseList = new ArrayList<>();
         for (Basket basket : basketList) {
+            if (basket.getProductList().isEmpty()) {
+                basketRepository.delete(basket);
+                continue;
+            }
+
             Double price = basket.calculatePrice();
 
             BasketResponse basketResponse = BasketResponse.builder()
@@ -189,8 +194,11 @@ public class BasketService {
         log.info(basket.getId());
         for (BasketProduct basketProduct : basket.getProductList()) {
             log.info("Basket product id: {}", basketProduct.getProduct().getId());
-            if (basketProduct.getProduct().getId().equals(deleteProductFromBasketRequest.getProductId()))
+            if (basketProduct.getProduct().getId().equals(deleteProductFromBasketRequest.getProductId())) {
+                log.info("Basket product found!!");
                 basket.getProductList().remove(basketProduct);
+                log.info("REMOVED SUCCESSFULLY!!");
+            }
         }
         if (basket.getProductList().isEmpty()) {
             basketRepository.delete(basket);
