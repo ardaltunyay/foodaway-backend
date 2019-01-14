@@ -11,5 +11,5 @@ public interface BasketRepository extends MongoRepository<Basket, String> {
     List<Basket> findAllByUserId(String userId);
     Optional<Basket> findByUserIdAndBranchId(String userId, String branchId);
     boolean deleteAllByUserId(String userId);
-    boolean deleteByUserIdAndAndBranchId(String userId, String branchId);
+    boolean deleteByUserIdAndBranchId(String userId, String branchId);
 }

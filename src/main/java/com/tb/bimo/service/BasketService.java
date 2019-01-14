@@ -133,7 +133,7 @@ public class BasketService {
     }
 
     public boolean deleteBasketOfUserByBranchId(String userId, String companyId){
-        return basketRepository.deleteByUserIdAndAndBranchId(userId, companyId);
+        return basketRepository.deleteByUserIdAndBranchId(userId, companyId);
     }
 
     private BasketProduct mapProductIdQuantityToBasketProduct(ProductIdQuantity productIdQuantity) {
