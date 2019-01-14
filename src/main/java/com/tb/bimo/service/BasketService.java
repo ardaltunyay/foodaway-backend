@@ -128,12 +128,12 @@ public class BasketService {
         return basketRepository.save(basket);
     }
 
-    public boolean deleteAllBasketsOfUser(String userId) {
-        return basketRepository.deleteAllByUserId(userId);
+    public void deleteAllBasketsOfUser(String userId) {
+        basketRepository.deleteAllByUserId(userId);
     }
 
-    public boolean deleteBasketOfUserByBranchId(String userId, String companyId){
-        return basketRepository.deleteByUserIdAndBranchId(userId, companyId);
+    public void deleteBasketOfUserByBranchId(String userId, String companyId){
+        basketRepository.deleteByUserIdAndBranchId(userId, companyId);
     }
 
     private BasketProduct mapProductIdQuantityToBasketProduct(ProductIdQuantity productIdQuantity) {
