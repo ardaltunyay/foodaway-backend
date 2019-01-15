@@ -134,7 +134,7 @@ public class OrderService {
 
     public void revertOrder(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found."));
-        order.setStatus(OrderStatus.PREPARING);
+        order.setStatus(OrderStatus.PAYMENT_SUCCESS);
         order.setPreparingTime(null);
         orderRepository.save(order);
     }
